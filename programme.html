@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will Kazuki - Programme</title>
+    <style>
+        /* Style global */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Playfair Display', serif; /* Police élégante et royale */
+            background-color: #121212;
+            color: #fff;
+            line-height: 1.6;
+            padding: 1rem;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 2rem 1rem;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://via.placeholder.com/1920x1080');
+            background-size: cover;
+            background-position: center;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: gold;
+        }
+
+        header p {
+            font-size: 1rem;
+            font-style: italic;
+            color: #ccc;
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: gold;
+            font-size: 1rem;
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            background-color: #333;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        nav a:hover {
+            background-color: #d4af37; /* Or plus clair */
+            color: #121212;
+        }
+
+        /* Sections */
+        section {
+            margin-bottom: 1.5rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: gold;
+            text-align: center;
+        }
+
+        .week-container {
+            margin-bottom: 2rem;
+        }
+
+        .week-header {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: gold;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .day-selector {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .day-selector button {
+            padding: 0.5rem 1rem;
+            background-color: gold;
+            color: #121212;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .day-selector button:hover {
+            background-color: #d4af37;
+        }
+
+        .day-program {
+            display: none;
+            background-color: #1e1e1e;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        .day-program.active {
+            display: block;
+        }
+
+        .day-program h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: gold;
+            text-align: center;
+        }
+
+        .day-program h4 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: gold;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .day-program ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .day-program ul li {
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        /* Styles spécifiques pour les sections */
+        .morning, .afternoon, .evening {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .morning {
+            background-color: #2a2a2a;
+        }
+
+        .afternoon {
+            background-color: #333;
+        }
+
+        .evening {
+            background-color: #2a2a2a;
+        }
+
+        /* Icônes pour les sections */
+        .icon-morning::before {
+            content: "🌅";
+            margin-right: 0.5rem;
+        }
+
+        .icon-afternoon::before {
+            content: "🌞";
+            margin-right: 0.5rem;
+        }
+
+        .icon-evening::before {
+            content: "🌙";
+            margin-right: 0.5rem;
+        }
+
+        strong {
+            color: gold;
+        }
+
+        em {
+            color: #ccc;
+            font-style: italic;
+        }
+
+        /* Audio/Video Player */
+        audio, video {
+            width: 100%;
+            margin-top: 0.5rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.5rem;
+            }
+
+            header p {
+                font-size: 0.9rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            nav a {
+                font-size: 0.9rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            .day-selector button {
+                font-size: 0.8rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            .day-program h3 {
+                font-size: 1rem;
+            }
+
+            .day-program h4 {
+                font-size: 0.9rem;
+            }
+
+            .day-program ul li {
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.2rem;
+            }
+
+            header p {
+                font-size: 0.8rem;
+            }
+
+            h2 {
+                font-size: 1rem;
+            }
+
+            nav a {
+                font-size: 0.8rem;
+                padding: 0.3rem 0.6rem;
+            }
+
+            .day-selector button {
+                font-size: 0.7rem;
+                padding: 0.3rem 0.6rem;
+            }
+
+            .day-program h3 {
+                font-size: 0.9rem;
+            }
+
+            .day-program h4 {
+                font-size: 0.8rem;
+            }
+
+            .day-program ul li {
+                font-size: 0.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <h1><span style="color: gold;">Programme Hebdomadaire</span></h1>
+        <p><em>"Chaque jour compte dans ma transformation."</em></p>
+    </header>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="index.html">Accueil</a>
+        <a href="valeurs.html">Valeurs</a>
+        <a href="routines.html">Routines</a>
+        <a href="objectifs.html">Objectifs</a>
+        <a href="programme.html">Programme</a>
+    </nav>
+
+    <!-- Section Semaine 1 -->
+    <section class="week-container">
+        <div class="week-header">📅 SEMAINE 1 : DÉMARRAGE FORT 🚀</div>
+        <h2>Sélectionne un Jour 📅</h2>
+        <div class="day-selector">
+            <button onclick="showDay('lundi')">LUNDI</button>
+            <button onclick="showDay('mardi')">MARDI</button>
+            <button onclick="showDay('mercredi')">MERCREDI</button>
+            <button onclick="showDay('jeudi')">JEUDI</button>
+            <button onclick="showDay('vendredi')">VENDREDI</button>
+            <button onclick="showDay('samedi')">SAMEDI</button>
+            <button onclick="showDay('dimanche')">DIMANCHE</button>
+        </div>
+
+        <!-- Programme Lundi -->
+        <div id="lundi" class="day-program">
+            <h3>🗓️ LUNDI : Structure & Mise en Place</h3>
+            <p><strong>Objectif du jour :</strong> Organiser ta semaine + Premier pas dans chaque domaine.</p>
+
+            <div class="morning">
+                <h4 class="icon-morning">Routine Matinale</h4>
+                <ul>
+                    <li>🕰️ <strong>Réveil :</strong> 5h30.</li>
+                    <li>🙏 <strong>Prière :</strong> 
+                        <audio controls>
+                            <source src="audio-priere.mp3" type="audio/mp3">
+                            Votre navigateur ne supporte pas l'élément audio.
+                        </audio>
+                    </li>
+                    <li>🧘‍♂️ <strong>Méditation :</strong> 
+                        <audio controls>
+                            <source src="audio-meditation.mp3" type="audio/mp3">
+                            Votre navigateur ne supporte pas l'élément audio.
+                        </audio>
+                    </li>
+                    <li>🏋️‍♂️ <strong>Sport :</strong> 
+                        <video controls>
+                            <source src="Jour 1.mp4" type="video/mp4">
+                            Votre navigateur ne supporte pas l'élément vidéo.
+                        </video>
+                    </li>
+                    <li>📖 <strong>Lecture spirituelle :</strong> 10 min.</li>
+                </ul>
+            </div>
+
+            <div class="afternoon">
+                <h4 class="icon-afternoon">Dans la Journée</h4>
+                <ul>
+                    <li>✅ <strong>Business :</strong> Analyser pourquoi ton e-commerce stagne → Identifier erreurs (40 min).</li>
+                    <li>✅ <strong>Révisions :</strong> Lister tous les sujets à réviser + Créer un plan de révision (1h).</li>
+                    <li>✅ <strong>Alimentation :</strong> Commencer le déficit calorique (pas de sucre, pas de malbouffe).</li>
+                    <li>✅ <strong>Hydratation :</strong> 2L d’eau minimum.</li>
+                </ul>
+            </div>
+
+            <div class="evening">
+                <h4 class="icon-evening">Routine du Soir</h4>
+                <ul>
+                    <li>hower Shower + Pommade.</li>
+                    <li>📝 <strong>Préparer la journée de mardi.</strong></li>
+                    <li>🙏 <strong>Méditation de gratitude :</strong> 
+                        <audio controls>
+                            <source src="audio-meditation-gratitude.mp3" type="audio/mp3">
+                            Votre navigateur ne supporte pas l'élément audio.
+                        </audio>
+                    </li>
+                    <li>🤔 <strong>Temps de réflexion sur un sujet précis.</strong></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Programme Mardi -->
+        <div id="mardi" class="day-program">
+            <h3>🗓️ MARDI : Discipline & Premiers Résultats</h3>
+            <p><strong>Objectif du jour :</strong> Appliquer les premières actions avec discipline.</p>
+
+                        <div class="morning">
+                <h4 class="icon-morning">Routine Matinale</h4>
+                <ul>
+                    <li>🕰️ <strong>Réveil :</strong> 5h30.</li>
+                    <li>🙏 <strong>Prière :</strong> 
+                        <audio controls>
+                            <source src="audio-priere.mp3" type="audio/mp3">
+                            Votre navigateur ne supporte pas l'élément audio.
+                        </audio>
+                    </li>
+                    <li>🧘‍♂️ <strong>Affirmations + Visualisation :</strong> 
+                        <audio controls>
+                            <source src="audio-meditation.mp3" type="audio/mp3">
+                            Votre navigateur ne supporte pas l'élément audio.
+                        </audio>
+                    </li>
+                    <li>🏋️‍♂️ <strong>Sport :</strong> 
+                        <video controls>
+                            <source src="Jour 2.mp4" type="video/mp4">
+                            Votre navigateur ne supporte pas l'élément vidéo.
+                        </video>
+                    </li>
+                    <li>📖 <strong>Lecture spirituelle :</strong> 10 min.</li>
+                </ul>
+            </div>
+
+            <div class="afternoon">
+                <h4 class="icon-afternoon">Dans la Journée</h4>
+                <ul>
+                    <li>✅ <strong>Business :</strong> Rechercher 3 nouveaux produits rentables (40 min).</li>
+                    <li>✅ <strong>Révisions :</strong> Étudier 1 chapitre clé (1h).</li>
+                    <li>✅ <strong>TikTok :</strong> Trouver 5 idées de contenu et écrire un script (30 min).</li>
+                    <li>✅ <strong>Alimentation :</strong> Respect total du plan alimentaire.</li>
+                </ul>
+            </div>
+
+            <div class="evening">
+                <h4 class="icon-evening">Routine du Soir</h4>
+                <ul>
+                    <li>hower Shower + Pommade.</li>
+                    <li>📝 <strong>Préparer la journée de mercredi.</strong></li>
+                    <li>🙏 <strong>Méditation de gratitude :</strong> 
+                        <audio controls>
+                            <source src="audio-meditation-gratitude.mp3" type="audio/mp3">
+                            Votre navigateur ne supporte pas l'élément audio.
+                        </audio>
+                    </li>
+                    <li>🤔 <strong>Réflexion sur les forces et faiblesses du jour.</strong></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Programme Mercredi -->
+        <div id="mercredi" class="day-program">
+            <h3>🗓️ MERCREDI : Accélération & Constance</h3>
+            <p><strong>Objectif du jour :</strong> Rester constant et voir les premiers effets.</p>
+
+            <div class="morning">
+                <h4 class="icon-morning">Routine Matinale</h4>
+                <ul>
+                    <li>🕰️ <strong>Réveil :</strong> 5h30.</li>
+                    <li>🙏 <strong>Prière :</strong> 
+                        <audio controls>
+                            <source src="audio-priere.mp3" type="audio/mp3">
+                            Votre navigateur ne supporte pas l'élément audio.
+                        </audio>
+<li>🧘‍♂️ <strong>Méditation :</strong> 
+                        <audio controls>
+                            <source src="audio-meditation.mp3" type="audio/mp3">
+                            Votre navigateur ne supporte pas l'élément audio.
+                        </audio>
+                    </li>
+                    <li>🏋️‍♂️ <strong>Sport :</strong> 
+                        <video controls>
+                            <source src="Jour 3.mp4" type="video/mp4">
+                            Votre navigateur ne supporte pas l'élément vidéo.
+                        </video>
+                    </li>
+                    <li>📖 <strong>Lecture spirituelle :</strong> 10 min.</li>
+                </ul>
+            </div>
+
+            <div class="afternoon">
+                <h4 class="icon-afternoon">Dans la Journée</h4>
+                <ul>
+                    <li>✅ <strong>Business :</strong> Apprendre une nouvelle stratégie e-commerce (40 min).</li>
+                    <li>✅ <strong>Révisions :</strong> Faire une fiche récapitulative d’un chapitre (1h).</li>
+                    <li>✅ <strong>TikTok :</strong> Tourner la première vidéo (30 min).</li>
+                    <li>✅ <strong>Santé :</strong> Hydratation + respect du plan alimentaire.</li>
+                </ul>
+            </div>
+
+            <div class="evening">
+                <h4 class="icon-evening">Routine du Soir</h4>
+                <ul>
+                    <li>hower Shower + Pommade.</li>
+                    <li>📝 <strong>Préparer la journée de jeudi.</strong></li>
+                    <li>🙏 <strong>Méditation de gratitude :</strong> 
+                        <audio controls>
+                            <source src="audio-meditation-gratitude.mp3" type="audio/mp3">
+                            Votre navigateur ne supporte pas l'élément audio.
+                        </audio>
+                    </li>
+                    <li>🤔 <strong>Bilan des actions accomplies.</strong></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Programme Jeudi -->
+        <div id="jeudi" class="day-program">
+            <h3>🗓️ JEUDI : Tester & Ajuster</h3>
+            <p><strong>Objectif du jour :</strong> Tester des actions concrètes et voir ce qui marche.</p>
+
+            <div class="morning">
+                <h4 class="icon-morning">Routine Matinale</h4>
+                <ul>
+                    <li>🕰️ <strong>Réveil :</strong> 5h30.</li>
+                    <li>🙏 <strong>Prière :</strong> 
+                        <audio controls>
+                            <source src="audio-priere.mp3" type="audio/mp3">
+                            Votre navigateur ne supporte pas l'élément audio.
+                        </audio>
+<li>🧘‍♂️ <strong>Méditation :</strong> 
+                        <audio controls>
+                            <source src="audio-meditation.mp3" type="audio/mp3">
+                            Votre navigateur ne supporte pas l'élément audio.
+                        </audio>
+                    </li>
+                    <li>🏋️‍♂️ <strong>Sport :</strong> 
+                        <video controls>
+                            <source src="Jour 2.mp4" type="video/mp4">
+                            Votre navigateur ne supporte pas l'élément vidéo.
+                        </video>
+                    </li>
+                    <li>📖 <strong>Lecture spirituelle :</strong> 10 min.</li>
+                </ul>
+            </div>
+
+            <div class="afternoon">
+                <h4 class="icon-afternoon">Dans la Journée</h4>
+                <ul>
+                    <li>✅ <strong>Business :</strong> Trouver un fournisseur pour un produit rentable (40 min).</li>
+                    <li>✅ <strong>Révisions :</strong> Faire des exercices pratiques sur un sujet clé (1h).</li>
+                    <li>✅ <strong>TikTok :</strong> Publier la première vidéo (même basique).</li>
+                    <li>✅ <strong>Santé :</strong> Pesée et ajustement du plan alimentaire.</li>
+                </ul>
+            </div>
+
+            <div class="evening">
+                <h4 class="icon-evening">Routine du Soir</h4>
+                <ul>
+                    <li>hower Shower + Pommade.</li>
+                    <li>📝 <strong>Préparer la journée de vendredi.</strong></li>
+                    <li>🙏 <strong>Méditation de gratitude :</strong> 
+                        <audio controls>
+                            <source src="audio-meditation-gratitude.mp3" type="audio/mp3">
+                            Votre navigateur ne supporte pas l'élément audio.
+                        </audio>
+                    </li>
+                    <li>🤔 <strong>Analyse des réussites et des échecs.</strong></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Programme Vendredi -->
+        <div id="vendredi" class="day-program">
+            <h3>🗓️ VENDREDI : Grosse Productivité</h3>
+            <p><strong>Objectif du jour :</strong> Fournir un effort maximum pour accumuler des gains.</p>
+
+            <div class="morning">
+                <h4 class="icon-morning">Routine Matinale</h4>
+                <ul>
+                    <li>🕰️ <strong>Réveil :</strong> 5h30.</li>
+                    <li>🙏 <strong>Prière :</strong> 
+                        <audio controls>
+                            <source src="audio-priere.mp3" type="audio/mp3">
+                            Votre navigateur ne supporte pas l'élément audio.
+                        </audio>
+<li>🧘‍♂️ <strong>Méditation :</strong> 
+                        <audio controls>
+                            <source src="audio-meditation.mp3" type="audio/mp3">
+                            Votre navigateur ne supporte pas l'élément audio.
+                        </audio>
+                    </li>
+                    <li>🏋️‍♂️ <strong>Sport :</strong> 
+                        <video controls>
+                            <source src="Jour 4.mp4" type="video/mp4">
+                            Votre navigateur ne supporte pas l'élément vidéo.
+                        </video>
+                    </li>
+                    <li>📖 <strong>Lecture spirituelle :</strong> 10 min.</li>
+                </ul>
+            </div>
+
+            <div class="afternoon">
+                <h4 class="icon-afternoon">Dans la Journée</h4>
+                <ul>
+                    <li>✅ <strong>Business :</strong> Lancer une annonce publicitaire/tester une offre (40 min).</li>
+                    <li>✅ <strong>Révisions :</strong> Simuler une présentation orale (1h).</li>
+                    <li>✅ <strong>TikTok :</strong> Étudier les tendances et adapter ton contenu.</li>
+                    <li>✅ <strong>Santé :</strong> Hydratation + alimentation propre.</li>
+                </ul>
+            </div>
+
+            <div class="evening">
+                <h4 class="icon-evening">Routine du Soir</h4>
+                <ul>
+                    <li>hower Shower + Pommade.</li>
+                    <li>📝 <strong>Préparer la journée de samedi.</strong></li>
+                    <li>🙏 <strong>Méditation de gratitude :</strong> 
+                        <audio controls>
+                            <source src="audio-meditation-gratitude.mp3" type="audio/mp3">
+                            Votre navigateur ne supporte pas l'élément audio.
+                        </audio>
+                    </li>
+                    <li>🤔 <strong>Débriefing de la semaine, analyse des progrès.</strong></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Programme Samedi -->
+        <div id="samedi" class="day-program">
+            <h3>🗓️ SAMEDI : Ajuster et Optimiser</h3>
+            <p><strong>Objectif du jour :</strong> Corriger les erreurs et améliorer tes stratégies.</p>
+
+            <div class="morning">
+                <h4 class="icon-morning">Routine Matinale</h4>
+                <ul>
+                    <li>🕰️ <strong>Réveil :</strong> 6h (repos léger).</li>
+                    <li>🙏 <strong>Prière :</strong> 
+                        <audio controls>
+                            <source src="audio-priere.mp3" type="audio/mp3">
+                            Votre navigateur ne supporte pas l'élément audio.
+                        </audio>
+<li>🧘‍♂️ <strong>Méditation :</strong> 
+                        <audio controls>
+                            <source src="audio-meditation.mp3" type="audio/mp3">
+                            Votre navigateur ne supporte pas l'élément audio.
+                        </audio>
+                    </li>
+                    <li>🏋️‍♂️ <strong>Sport :</strong> 
+                        <video controls>
+                            <source src="Jour 5.mp4" type="video/mp4">
+                            Votre navigateur ne supporte pas l'élément vidéo.
+                        </video>
+                    </li>
+                    <li>📖 <strong>Lecture spirituelle :</strong> 10 min.</li>
+                </ul>
+            </div>
+
+            <div class="afternoon">
+                <h4 class="icon-afternoon">Dans la Journée</h4>
+                <ul>
+                    <li>✅ <strong>Business :</strong> Évaluer la progression et ajuster tes actions (40 min).</li>
+                    <li>✅ <strong>Révisions :</strong> Relire et renforcer les sujets difficiles (1h).</li>
+                    <li>✅ <strong>TikTok :</strong> Étudier ce qui fonctionne chez les autres créateurs (30 min).</li>
+                    <li>✅ <strong>Santé :</strong> Évaluer ton évolution (poids, énergie, discipline).</li>
+                </ul>
+            </div>
+
+            <div class="evening">
+                <h4 class="icon-evening">Routine du Soir</h4>
+                <ul>
+                    <li>hower Shower + Pommade.</li>
+                    <li>📝 <strong>Préparer la journée de dimanche.</strong></li>
+                    <li>🙏 <strong>Méditation de gratitude :</strong> 
+                        <audio controls>
+                            <source src="audio-meditation-gratitude.mp3" type="audio/mp3">
+                            Votre navigateur ne supporte pas l'élément audio.
+                        </audio>
+                    </li>
+                    <li>🤔 <strong>Analyse des ajustements à faire.</strong></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Programme Dimanche -->
+        <div id="dimanche" class="day-program">
+            <h3>🗓️ DIMANCHE : Bilan & Stratégie pour la Semaine 2</h3>
+            <p><strong>Objectif du jour :</strong> Repos actif + évaluation.</p>
+
+            <div class="morning">
+                <h4 class="icon-morning">Routine Matinale</h4>
+                <ul>
+                    <li>🕰️ <strong>Réveil :</strong> 6h (repos contrôlé).</li>
+                    <li>🙏 <strong>Prière :</strong> 
+                        <audio controls>
+                            <source src="audio-priere.mp3" type="audio/mp3">
+                            Votre navigateur ne supporte pas l'élément audio.
+                        </audio>
+                    </li>
+                    <li>🧘‍♂️ <strong>Méditation + gratitude :</strong> 
+                        <audio controls>
+                            <source src="audio-meditation-gratitude.mp3" type="audio/mp3">
+                            Votre navigateur ne supporte pas l'élément audio.
+                        </audio>
+                    </li>
+                    <li>📖 <strong>Lecture spirituelle :</strong> 15 min.</li>
+                </ul>
+            </div>
+
+            <div class="afternoon">
+                <h4 class="icon-afternoon">Dans la Journée</h4>
+                <ul>
+                    <li>✅ <strong>Business :</strong> Revoir la stratégie e-commerce et planifier la suite (40 min).</li>
+                    <li>✅ <strong>Révisions :</strong> Faire un quiz sur les révisions de la semaine (1h).</li>
+                    <li>✅ <strong>TikTok :</strong> Écrire des scripts pour la semaine suivante (30 min).</li>
+                    <li>✅ <strong>Santé :</strong> Planifier les repas de la semaine 2.</li>
+                </ul>
+            </div>
+
+            <div class="evening">
+                <h4 class="icon-evening">Routine du Soir</h4>
+                <ul>
+                    <li>hower Shower + Pommade.</li>
+                    <li>📝 <strong>Fixer les objectifs précis de la semaine suivante.</strong></li>
+                    <li>🙏 <strong>Méditation de gratitude :</strong> 
+                        <audio controls>
+                            <source src="audio-meditation-gratitude.mp3" type="audio/mp3">
+                            Votre navigateur ne supporte pas l'élément audio.
+                        </audio>
+                    </li>
+                    <li>🤔 <strong>Vision + stratégie pour la suite.</strong></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Semaine 2 -->
+    <section class="week-container">
+        <div class="week-header">📅 SEMAINE 2 : CONSOLIDATION & PROGRESSION 🌟</div>
+        <p style="text-align: center; font-style: italic;">Contenu à venir...</p>
+    </section>
+
+    <!-- Section À Venir -->
+    <section class="week-container">
+        <div class="week-header">📅 À VENIR : NOUVELLES SEMAINES 🔮</div>
+        <p style="text-align: center; font-style: italic;">Restez connecté pour découvrir les prochains programmes !</p>
+    </section>
+
+    <script>
+        // Afficher le programme du jour sélectionné
+        function showDay(day) {
+            const programs = document.querySelectorAll('.day-program');
+            programs.forEach(program => {
+                program.classList.remove('active');
+            });
+            document.getElementById(day).classList.add('active');
+        }
+
+        // Afficher automatiquement le programme du jour actuel
+        const daysOfWeek = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche'];
+        const today = new Date().toLocaleDateString('fr-FR', { weekday: 'long' }).toLowerCase();
+        if (daysOfWeek.includes(today)) {
+            showDay(today);
+        }
+    </script>
+</body>
+</html>
